@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 
@@ -22,14 +23,21 @@ class TopicOverviewActivity : AppCompatActivity() {
             "Marvel description")
         Log.i("in topic overview", selectedTopic.toString())
         // fillPage(selectedTopic, selectedTopicIndex)
-
+        val numQuestions = arrayOf(2, 2, 2)
         var topicTextView :TextView = findViewById(R.id.topicTextView)
         var topicDescriptionTextView :TextView = findViewById(R.id.topicDescriptionTextView)
         var numQuestionsTextView: TextView = findViewById(R.id.numQuestionsTextView)
 
         topicTextView.text = selectedTopic
         topicDescriptionTextView.text = topicDescriptions[selectedTopicIndex]
+        numQuestionsTextView.text = "Number of Questions: " + numQuestions[selectedTopicIndex.toInt()].toString()
 
+        var beginButton : Button = findViewById(R.id.beginButton)
+        beginButton.setOnClickListener {
+            val intent = Intent(this, QuestionActivity::class.java)
+            intent.putExtra("topicPos", selectedTopicIndex)
+            startActivity(intent)
+        }
     }
 
     /* private fun fillPage(s:String, i:Int) {

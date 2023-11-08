@@ -12,11 +12,11 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="Topic"
+
         android:textAlignment="center"
         app:layout_constraintTop_toTopOf="parent">
 
     </TextView>
-
     <TextView
         android:id="@+id/topicDescriptionTextView"
         android:layout_width="match_parent"
@@ -39,17 +39,18 @@
     </TextView>
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:id="@+id/beginButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="161dp"
         android:layout_marginTop="95dp"
         android:layout_marginEnd="162dp"
-        android:layout_marginBottom="396dp"
         android:text="Begin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numQuestionsTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/numQuestionsTextView"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
