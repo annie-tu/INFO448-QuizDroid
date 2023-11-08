@@ -6,4 +6,50 @@
     android:layout_height="match_parent"
     tools:context=".TopicOverviewActivity">
 
+    <TextView
+        android:id="@+id/topicTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Topic"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/topicDescriptionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Topic description"
+        app:layout_constraintTop_toBottomOf="@+id/topicTextView"
+        tools:layout_editor_absoluteX="25dp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/numQuestionsTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="82dp"
+        android:text="number of questions in the topic"
+        app:layout_constraintTop_toBottomOf="@+id/topicDescriptionTextView"
+        tools:layout_editor_absoluteX="63dp">
+
+    </TextView>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:layout_marginTop="95dp"
+        android:layout_marginEnd="162dp"
+        android:layout_marginBottom="396dp"
+        android:text="Begin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numQuestionsTextView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

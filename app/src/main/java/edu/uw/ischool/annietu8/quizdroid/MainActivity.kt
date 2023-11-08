@@ -25,9 +25,16 @@ class MainActivity : AppCompatActivity() {
         topicListView.onItemClickListener = AdapterView.OnItemClickListener {
                 parent, view, position, id ->
             Toast.makeText(this, "You selected ${position}: ${topics[position]}", Toast.LENGTH_SHORT).show()
-            // do something
-            // val intent = Intent(this, TopicOverviewActivity::class.java)
-            //startActivity(intent)
+            val intent = Intent(this, TopicOverviewActivity::class.java)
+            intent.putExtra("topic", topics[position].toString())
+            intent.putExtra("topicPos", position)
+            /*val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.TOPIC, "Hi Grandma!")
+                type = "text/plain"
+            }*/
+
+            startActivity(intent)
             //finish()
         }
     }
