@@ -35,7 +35,7 @@ class TopicOverviewActivity : AppCompatActivity() {
         var beginButton : Button = findViewById(R.id.beginButton)
         beginButton.setOnClickListener {
             val intent = Intent(this, QuestionActivity::class.java)
-            intent.putExtra("topicPos", selectedTopicIndex)
+            intent.putExtra("topic", selectedTopic)
             startActivity(intent)
         }
     }

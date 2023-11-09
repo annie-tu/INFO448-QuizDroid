@@ -8,21 +8,36 @@ import android.view.View
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.TextView
+import android.widget.Toast
 
 class QuestionActivity : AppCompatActivity() {
-        override fun onCreate(savedInstanceState: Bundle?) {
+    private var numQuestions: Int = 0
+    data class Question (
+        val id: Int,
+        val subject: String,
+        val question: String,
+        val optionOne: String,
+        val optionTwo: String,
+        val optionThree: String,
+        val optionFour: String,
+        val correctAnswer: Int
+    )
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question)
-        val selectedTopicIndex : Int = intent.getIntExtra("topicPos", -1)
+        val selectedTopic: String? = intent.getStringExtra("topic")
+        Toast.makeText(this, selectedTopic, Toast.LENGTH_SHORT).show()
 
-        val questions = arrayOf()
 
+        val questionList = getQuestions(selectedTopic.toString())
+
+        val questionTextView: TextView = findViewById(R.id.questionTextView)
         val radioGroup : RadioGroup = findViewById(R.id.answerGroup)
         val rb1 : RadioButton = findViewById(R.id.rb1)
         val rb2 : RadioButton = findViewById(R.id.rb2)
         val rb3 : RadioButton = findViewById(R.id.rb3)
         val rb4 : RadioButton = findViewById(R.id.rb4)
-
         val submitButton : Button = findViewById(R.id.submitButton)
         radioGroup.setOnCheckedChangeListener { group, checkedId ->
             if (checkedId != -1) {
@@ -34,23 +49,53 @@ class QuestionActivity : AppCompatActivity() {
             }
         }
 
+        var answer: Int = -1
+        for(i in questionList.indices) {
+            questionTextView.text = questionList[i].question
+            rb1.text = questionList[i].optionOne
+            rb2.text = questionList[i].optionTwo
+            rb3.text = questionList[i].optionThree
+            rb4.text = questionList[i].optionFour
+            answer = questionList[i].correctAnswer
+        }
+
         submitButton.setOnClickListener {
+            val selectedRadioButtonId: Int = radioGroup.checkedRadioButtonId
+            val selectedRadioButton: RadioButton = findViewById(selectedRadioButtonId)
+            val position: Int = radioGroup.indexOfChild(selectedRadioButton)
+            if (position == answer - 1) {
+                Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "$selectedRadioButtonId $answer", Toast.LENGTH_SHORT).show()
+
+            } /*
             val intent = Intent(this, AnswerActivity::class.java)
-            intent.putExtra("topicPos", selectedTopicIndex)
-            startActivity(intent)
+            intent.putExtra("topic", selectedTopic)
+            startActivity(intent)*/
 
         }
-        /*
-        if (radioGroup.checkedRadioButtonId != -1) {
-            submitButton.visibility = View.VISIBLE
-            val selectedRadioButton = findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
-            val selectedText = selectedRadioButton.text.toString()
-
-
-        } else {
-            // No radio button is selected
-            submitButton.visibility = View.INVISIBLE
-
-        }*/
     }
+
+    private fun getQuestions(topic: String): ArrayList<Question> {
+        val questionList = listOf(
+            Question(1, "Math", "What is 2+2?", "1", "2",
+                "3", "4", 4),
+            Question(2, "Math", "What is 3+3?", "6", "0", "-5", "2", 1),
+            Question(3, "Physics", "F=?", "va", "ma", "-9.8", "x", 2),
+            Question(4, "Physics",
+            "How many centimeters in a meter?",
+            "1", "100", "100", "1000", 3),
+            Question(5, "Marvel Superheroes",
+            "What is Iron Man's real name?",
+            "Tony Stark", "Steve Rogers", "Bruce Banner", "Pepper Potts", 1),
+            Question(6, "Marvel Superheroes",
+            "What was the first Avengers Movie (by US Release Date)?",
+            "Iron Man",
+            "Captain America: The First Avenger",
+            "Thor",
+            "Doctor Strange", 1))
+        val filteredList = questionList.filter {it.subject == topic}
+        return ArrayList(filteredList)
+    }
+
 }
