@@ -28,14 +28,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, TopicOverviewActivity::class.java)
             intent.putExtra("topic", topics[position].toString())
             intent.putExtra("topicPos", position)
-            /*val sendIntent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.TOPIC, "Hi Grandma!")
-                type = "text/plain"
-            }*/
-
             startActivity(intent)
-            //finish()
         }
     }
 }

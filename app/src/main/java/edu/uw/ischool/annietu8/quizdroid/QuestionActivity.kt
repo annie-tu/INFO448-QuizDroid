@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore.Audio.Radio
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.RadioButton
@@ -12,7 +13,6 @@ import android.widget.TextView
 import android.widget.Toast
 
 class QuestionActivity : AppCompatActivity() {
-    private var numQuestions: Int = 0
     data class Question (
         val id: Int,
         val subject: String,
@@ -27,6 +27,8 @@ class QuestionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question)
         val selectedTopic: String? = intent.getStringExtra("topic")
+        var i: Int = intent.getIntExtra("questionIndex", 0)
+        var numCorrect: Int = intent.getIntExtra("numCorrect", 0)
         Toast.makeText(this, selectedTopic, Toast.LENGTH_SHORT).show()
 
 
@@ -48,31 +50,36 @@ class QuestionActivity : AppCompatActivity() {
                 submitButton.visibility = View.GONE
             }
         }
+        Log.i("QuestionActivity", "i=$i questionList size = ${questionList.size}")
 
         var answer: Int = -1
-        for(i in questionList.indices) {
-            questionTextView.text = questionList[i].question
-            rb1.text = questionList[i].optionOne
-            rb2.text = questionList[i].optionTwo
-            rb3.text = questionList[i].optionThree
-            rb4.text = questionList[i].optionFour
-            answer = questionList[i].correctAnswer
-        }
+        questionTextView.text = questionList[i].question
+        rb1.text = questionList[i].optionOne
+        rb2.text = questionList[i].optionTwo
+        rb3.text = questionList[i].optionThree
+        rb4.text = questionList[i].optionFour
+        answer = questionList[i].correctAnswer
+
 
         submitButton.setOnClickListener {
             val selectedRadioButtonId: Int = radioGroup.checkedRadioButtonId
             val selectedRadioButton: RadioButton = findViewById(selectedRadioButtonId)
             val position: Int = radioGroup.indexOfChild(selectedRadioButton)
             if (position == answer - 1) {
-                Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show()
+                numCorrect++
+                // Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "$selectedRadioButtonId $answer", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(this, "$selectedRadioButtonId $answer", Toast.LENGTH_SHORT).show()
 
-            } /*
+            }
             val intent = Intent(this, AnswerActivity::class.java)
             intent.putExtra("topic", selectedTopic)
-            startActivity(intent)*/
-
+            intent.putExtra("correct", position == answer - 1)
+            intent.putExtra("answer", questionList[i].correctAnswer) // might be wrong
+            intent.putExtra("questionIndex", i)
+            intent.putExtra("totalQuestions", questionList.size)
+            intent.putExtra("numCorrect", numCorrect)
+            startActivity(intent)
         }
     }
 

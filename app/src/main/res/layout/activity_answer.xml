@@ -6,4 +6,58 @@
     android:layout_height="match_parent"
     tools:context=".AnswerActivity">
 
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="124dp"
+        android:layout_marginEnd="163dp"
+        android:text="Next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numCorrectTextView" />
+
+    <TextView
+        android:id="@+id/givenAnswerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="173dp"
+        android:layout_marginTop="168dp"
+        android:layout_marginEnd="180dp"
+        android:layout_marginBottom="90dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/numCorrectTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/correctAnswerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="172dp"
+        android:layout_marginTop="78dp"
+        android:layout_marginEnd="181dp"
+        android:layout_marginBottom="70dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/givenAnswerTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/numCorrectTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="173dp"
+        android:layout_marginTop="89dp"
+        android:layout_marginEnd="180dp"
+        android:layout_marginBottom="235dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/nextButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/givenAnswerTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
