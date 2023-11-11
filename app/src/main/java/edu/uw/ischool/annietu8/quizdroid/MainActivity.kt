@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         topicListView.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, topics)
         topicListView.onItemClickListener = AdapterView.OnItemClickListener {
                 parent, view, position, id ->
-            Toast.makeText(this, "You selected ${position}: ${topics[position]}", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, TopicOverviewActivity::class.java)
             intent.putExtra("topic", topics[position].toString())
             intent.putExtra("topicPos", position)

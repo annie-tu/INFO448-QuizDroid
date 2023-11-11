@@ -9,20 +9,17 @@ import android.widget.TextView
 import android.widget.Toast
 
 class TopicOverviewActivity : AppCompatActivity() {
-    //private lateinit var intent : Intent
     override fun onCreate(savedInstanceState: Bundle?) {
-        //intent = intent
         val selectedTopicIndex : Int = intent.getIntExtra("topicPos", -1)
         val selectedTopic : String? = intent.getStringExtra("topic")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_topic_overview)
 
         val topicDescriptions = arrayOf(
-            "Math description",
-            "Physics description",
-            "Marvel description")
-        Log.i("in topic overview", selectedTopic.toString())
-        // fillPage(selectedTopic, selectedTopicIndex)
+            "Mathematics is a subject that deals with numbers, shapes, logic, quantity, and arrangements.",
+            "Physics involves the study of matter and its motion and behavior through space and time.",
+            "Marvel Comics is an American comic book publisher and popular movie franchise.")
+
         val numQuestions = arrayOf(2, 2, 2)
         var topicTextView :TextView = findViewById(R.id.topicTextView)
         var topicDescriptionTextView :TextView = findViewById(R.id.topicDescriptionTextView)
@@ -39,11 +36,4 @@ class TopicOverviewActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
-    /* private fun fillPage(s:String, i:Int) {
-        var topicTextView :TextView = findViewById(R.id.topicTextView)
-        var topicDescriptionTextView :TextView = findViewById(R.id.topicDescriptionTextView)
-        var numQuestionsTextView: TextView = findViewById(R.id.numQuestionsTextView)
-
-    }*/
 }
