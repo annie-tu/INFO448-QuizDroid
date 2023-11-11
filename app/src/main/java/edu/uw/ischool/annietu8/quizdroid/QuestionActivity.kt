@@ -13,6 +13,10 @@ import android.widget.TextView
 import android.widget.Toast
 
 class QuestionActivity : AppCompatActivity() {
+    private var onQuestionPage: Boolean = true
+    private var onFirstQuestionPage: Boolean = true
+    private var i: Int = 0
+    private val submittedQuestionIds = HashSet<Int>() // prevent double-counting points
     data class Question (
         val id: Int,
         val subject: String,
@@ -23,14 +27,27 @@ class QuestionActivity : AppCompatActivity() {
         val optionFour: String,
         val correctAnswer: String
     )
-    
+
+    override fun onBackPressed() {
+        if (onFirstQuestionPage) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            super.onBackPressed()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question)
+
         val selectedTopic: String? = intent.getStringExtra("topic")
         var i: Int = intent.getIntExtra("questionIndex", 0)
         var numCorrect: Int = intent.getIntExtra("numCorrect", 0)
-        Log.i("QuestionActivity", i.toString())
+
+        if (i > 0) {
+            onFirstQuestionPage = false
+        }
 
         val questionList = getQuestions(selectedTopic.toString())
 
@@ -61,8 +78,13 @@ class QuestionActivity : AppCompatActivity() {
             val selectedRadioButtonId: Int = radioGroup.checkedRadioButtonId
             val selectedRadioButton: RadioButton = findViewById(selectedRadioButtonId)
             val givenAnswer = selectedRadioButton.text
-            if (givenAnswer == answer) {
-                numCorrect++
+            // prevent double-counting points if user clicks back button and resubmits
+            val questionId = questionList[i].id
+            if (!submittedQuestionIds.contains(questionId)) {
+                if (givenAnswer == answer) {
+                    numCorrect++
+                    submittedQuestionIds.add(questionId)
+                }
             }
             val intent = Intent(this, AnswerActivity::class.java)
             intent.putExtra("topic", selectedTopic)
@@ -83,7 +105,7 @@ class QuestionActivity : AppCompatActivity() {
             Question(3, "Physics", "F=?", "va", "ma", "-9.8", "x", "ma"),
             Question(4, "Physics",
             "How many centimeters in a meter?",
-            "1", "100", "100", "1000", "100"),
+            "1", "10", "100", "1000", "100"),
             Question(5, "Marvel Superheroes",
             "What is Iron Man's real name?",
             "Tony Stark", "Steve Rogers", "Bruce Banner", "Pepper Potts", "Tony Stark"),
