@@ -15,23 +15,17 @@ class TopicOverviewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_topic_overview)
 
-        val topicDescriptions2 = arrayOf(
-            "Mathematics is a subject that deals with numbers, shapes, logic, quantity, and arrangements.",
-            "Physics involves the study of matter and its motion and behavior through space and time.",
-            "Marvel Comics is an American comic book publisher and popular movie franchise.")
+        val quizApp = QuizApp.instance.topicRepository.getTopics()
 
-        val topicDescriptions: List<String> = QuizApp.instance.topicRepository.getTopics().map { it.longDescription }
-
-        //Log.i("TopicOverviewActivity", "td2  $topicDescriptions2")
-
-        val numQuestions = QuizApp.instance.topicRepository.getTopics().map {it.questions.size}
-        // Log.i("TopicOverviewActivity", "numQ  $numQuestions")
+        val topicDescriptions: List<String> = quizApp.map { it.longDescription }
+        val numQuestions = quizApp.map {it.questions.size}
 
         var topicTextView :TextView = findViewById(R.id.topicTextView)
         var topicDescriptionTextView :TextView = findViewById(R.id.topicDescriptionTextView)
         var numQuestionsTextView: TextView = findViewById(R.id.numQuestionsTextView)
 
         topicTextView.text = selectedTopic
+        topicTextView.textSize = 20f
         topicDescriptionTextView.text = topicDescriptions[selectedTopicIndex]
         numQuestionsTextView.text = "Number of Questions: " + numQuestions[selectedTopicIndex].toString()
 

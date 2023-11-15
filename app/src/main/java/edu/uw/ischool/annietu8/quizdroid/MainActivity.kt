@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         val topicTitles: List<String> = QuizApp.instance.topicRepository.getTopics().map { it.title }
         // Log.i("Main","topic titles $topicTitles")
         val quizDroidTextView: TextView = findViewById(R.id.quizDroidTextView)
-        quizDroidTextView.textSize = 20f
+        quizDroidTextView.textSize = 25f
         topicListView =  findViewById(R.id.topicListView)
         topicListView.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, topicTitles)
         topicListView.onItemClickListener = AdapterView.OnItemClickListener {

@@ -11,10 +11,9 @@
         android:id="@+id/questionTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:text="Question"
-        android:textAlignment="center"
-        android:layout_marginTop="50dp">
-    </TextView>
+        android:textAlignment="center"></TextView>
 
     <RadioGroup
         android:id="@+id/answerGroup"
