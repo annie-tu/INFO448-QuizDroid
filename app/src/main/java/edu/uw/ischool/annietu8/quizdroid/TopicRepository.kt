@@ -2,5 +2,5 @@ package edu.uw.ischool.annietu8.quizdroid
 
 interface TopicRepository {
     fun getTopics(): List<Topic>
-    fun getTopicTitles(): List<String>
+    fun getQuizByTopic(topicTitle: String): List<Quiz>
 }

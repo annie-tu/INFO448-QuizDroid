@@ -8,7 +8,12 @@ class InMemoryTopicRepository : TopicRepository{
         "Mathematics is a subject that deals with numbers, shapes, logic, quantity, and arrangements.",
         listOf(
             Quiz("What is 2+2?", listOf("1", "2", "3", "4"), 3),
-            Quiz("What is 3+3", listOf("6, 0, -5, 2"), 0)
+            Quiz("What is 3+3", listOf("6", "0", "-5", "2"), 0),
+            Quiz("What is the formula for the volume of a cone?",
+                listOf("V = 1/2 * b * h",
+                    "V = a^3",
+                    "V = (1/3) * pi * r^2 * h",
+                    "V = sin(x)"), 2)
         )
     )
 
@@ -52,11 +57,14 @@ class InMemoryTopicRepository : TopicRepository{
         )
     )
     private val topics: List<Topic> =  listOf(topic1, topic2, topic3)
-    override fun getTopicTitles(): List<String> {
-        return getTopics().map { it.title }
-    }
+
     override fun getTopics(): List<Topic> {
         return topics
     }
-
+    override fun getQuizByTopic(topicTitle: String): List<Quiz> {
+        return topics
+            .firstOrNull { it.title == topicTitle }
+            ?.questions
+            ?: emptyList()
+    }
 }

@@ -13,10 +13,9 @@ import android.widget.TextView
 import android.widget.Toast
 
 class QuestionActivity : AppCompatActivity() {
-    private var onQuestionPage: Boolean = true
     private var onFirstQuestionPage: Boolean = true
     private var i: Int = 0
-    private val submittedQuestionIds = HashSet<Int>() // prevent double-counting points
+    // private val submittedQuestionIds = HashSet<Int>() // prevent double-counting points
     data class Question (
         val id: Int,
         val subject: String,
@@ -41,7 +40,7 @@ class QuestionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question)
 
-        val selectedTopic: String? = intent.getStringExtra("topic")
+        val selectedTopic: String = intent.getStringExtra("topic").toString()
         var i: Int = intent.getIntExtra("questionIndex", 0)
         var numCorrect: Int = intent.getIntExtra("numCorrect", 0)
 
@@ -49,7 +48,8 @@ class QuestionActivity : AppCompatActivity() {
             onFirstQuestionPage = false
         }
 
-        val questionList = getQuestions(selectedTopic.toString())
+        val questionList = QuizApp.instance.topicRepository.getQuizByTopic(selectedTopic)
+        // Log.i("QuestionActivity", "ql2 $questionList")
 
         val questionTextView: TextView = findViewById(R.id.questionTextView)
         val radioGroup : RadioGroup = findViewById(R.id.answerGroup)
@@ -65,26 +65,28 @@ class QuestionActivity : AppCompatActivity() {
                 submitButton.visibility = View.GONE
             }
         }
-
-        var answer: String = questionList[i].correctAnswer
-        questionTextView.text = questionList[i].question
-        rb1.text = questionList[i].optionOne
-        rb2.text = questionList[i].optionTwo
-        rb3.text = questionList[i].optionThree
-        rb4.text = questionList[i].optionFour
-
+        val quiz = questionList[i]
+        var answer: String = quiz.answers[quiz.correctAnswerIndex]
+        questionTextView.text = quiz.question
+        rb1.text = quiz.answers[0]
+        rb2.text = quiz.answers[1]
+        rb3.text = quiz.answers[2]
+        rb4.text = quiz.answers[3]
 
         submitButton.setOnClickListener {
             val selectedRadioButtonId: Int = radioGroup.checkedRadioButtonId
             val selectedRadioButton: RadioButton = findViewById(selectedRadioButtonId)
             val givenAnswer = selectedRadioButton.text
             // prevent double-counting points if user clicks back button and resubmits
-            val questionId = questionList[i].id
+            /*val questionId = questionList[i].id
             if (!submittedQuestionIds.contains(questionId)) {
                 if (givenAnswer == answer) {
                     numCorrect++
                     submittedQuestionIds.add(questionId)
                 }
+            }*/
+            if (givenAnswer == answer) {
+                numCorrect++
             }
             val intent = Intent(this, AnswerActivity::class.java)
             intent.putExtra("topic", selectedTopic)
@@ -96,27 +98,4 @@ class QuestionActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
-    private fun getQuestions(topic: String): ArrayList<Question> {
-        val questionList = listOf(
-            Question(1, "Math", "What is 2+2?", "1", "2",
-                "3", "4", "4"),
-            Question(2, "Math", "What is 3+3?", "6", "0", "-5", "2", "6"),
-            Question(3, "Physics", "F=?", "va", "ma", "-9.8", "x", "ma"),
-            Question(4, "Physics",
-            "How many centimeters in a meter?",
-            "1", "10", "100", "1000", "100"),
-            Question(5, "Marvel Superheroes",
-            "What is Iron Man's real name?",
-            "Tony Stark", "Steve Rogers", "Bruce Banner", "Pepper Potts", "Tony Stark"),
-            Question(6, "Marvel Superheroes",
-            "What was the first Avengers Movie (by US Release Date)?",
-            "Iron Man",
-            "Captain America: The First Avenger",
-            "Thor",
-            "Doctor Strange", "Iron Man"))
-        val filteredList = questionList.filter {it.subject == topic}
-        return ArrayList(filteredList)
-    }
-
 }

@@ -8,7 +8,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
-import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity() {
     private lateinit var topicListView : ListView
@@ -17,8 +16,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val topicTitles: List<String> = QuizApp.instance.topicRepository.getTopicTitles()
-        Log.i("Main","topic titles $topicTitles")
+        val topicTitles: List<String> = QuizApp.instance.topicRepository.getTopics().map { it.title }
+        // Log.i("Main","topic titles $topicTitles")
 
         topicListView =  findViewById(R.id.topicListView)
         topicListView.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, topicTitles)

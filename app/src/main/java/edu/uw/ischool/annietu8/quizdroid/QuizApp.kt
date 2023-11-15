@@ -4,7 +4,6 @@ import android.util.Log
 
 class QuizApp : Application() {
     private val TAG : String = "QuizApp"
-
     override fun onCreate() {
         super.onCreate()
         instance = this
