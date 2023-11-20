@@ -43,7 +43,7 @@ class JsonFileTopicRepository(private val context: Context) : TopicRepository {
     }
 
     override fun getTopicsFromJsonFile(): List<Topic> {
-        val filePath = "/storage/emulated/0/Android/data/edu.uw.ischool.annietu8.quizdroid/files" + "/questions.json"
+        val filePath = "/storage/emulated/0/Android/data/edu.uw.ischool.annietu8.quizdroid/files" + "/extra_questions.json"
         val file = File(filePath)
         Log.i("TopicRepository", file.toString())
 
