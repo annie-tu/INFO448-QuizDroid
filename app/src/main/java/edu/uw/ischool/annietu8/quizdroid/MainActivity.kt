@@ -4,11 +4,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
+import android.view.MenuItem
 
 class MainActivity : AppCompatActivity() {
     private lateinit var topicListView : ListView
@@ -16,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(findViewById(R.id.my_toolbar))
 
         Log.i("MainActivity", filesDir.toString())
         Log.i("MainActivity", getExternalFilesDir(null).toString())
@@ -33,5 +36,14 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("topicPos", position)
             startActivity(intent)
         }
+    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.preferences_bar, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent = Intent(this, PreferencesActivity::class.java)
+        startActivity(intent)
+        return true
     }
 }

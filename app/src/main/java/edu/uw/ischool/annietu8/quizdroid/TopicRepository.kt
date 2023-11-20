@@ -2,8 +2,6 @@ package edu.uw.ischool.annietu8.quizdroid
 
 import android.content.Context
 import android.util.Log
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -31,8 +29,6 @@ interface TopicRepository {
 class JsonFileTopicRepository(private val context: Context) : TopicRepository {
     private val topics: List<Topic>
     init {
-        //topics = getTopicsFromJsonFile()
-        //Log.i("TopicRepository", "topics $topics.toString()")
         Log.i("TopicRepository", "starting")
         topics = getTopicsFromJsonFile()
     }
@@ -86,96 +82,19 @@ class JsonFileTopicRepository(private val context: Context) : TopicRepository {
                 val questionText = questionObject.getString("text")
                 val answer = questionObject.getInt("answer")
                 val answersArray = questionObject.getJSONArray("answers")
-                Log.i("TopicRepository", "answer array $j $answersArray")
                 val quiz = Quiz(questionText, jsonArrayToList(answersArray), answer - 1)
                 quizObjects.add(quiz)
             }
             val topic = Topic(title, shortDescription, longDescription, quizObjects)
-            Log.i("TopicRepository", "topic $topic")
-
             topics.add(topic)
         }
         return topics
     }
-
     private fun jsonArrayToList(jsonArray: JSONArray): List<String> {
         val list = mutableListOf<String>()
         for (i in 0 until jsonArray.length()) {
             list.add(jsonArray.getString(i))
         }
         return list
-    }
-
-}
-class InMemoryTopicRepository : TopicRepository {
-    // Hard-coded list of topics and quizzes
-    private val topic1 = Topic(
-        "Math",
-        "math is super fun!",
-        "Mathematics is a subject that deals with numbers, shapes, logic, quantity, and arrangements.",
-        listOf(
-            Quiz("What is 2+2?", listOf("1", "2", "3", "4"), 3),
-            Quiz("What is 3+3", listOf("6", "0", "-5", "2"), 0),
-            Quiz("What is the formula for the volume of a cone?",
-                listOf("V = 1/2 * b * h",
-                    "V = a^3",
-                    "V = (1/3) * pi * r^2 * h",
-                    "V = sin(x)"), 2)
-        )
-    )
-
-    private val topic2 = Topic(
-        "Physics",
-        "love physics!",
-        "Physics involves the study of matter and its motion and behavior through space and time.",
-        listOf(
-            Quiz("F = ?", listOf("va", "ma", "-9.8", "x"), 1),
-            Quiz(
-                "Momentum is...",
-                listOf(
-                    "mass * velocity",
-                    "Earth's gravitational pull",
-                    "A fictional concept",
-                    "not related to magnitude or direction"
-                ),
-                0
-            )
-        )
-    )
-
-    private val topic3 = Topic(
-        "Marvel Superheroes",
-        "cool movies",
-        "Marvel Comics is an American comic book publisher and popular movie franchise.",
-        listOf(
-            Quiz(
-                "What is Iron Man's real name?",
-                listOf("Tony Stark", "Steve Rogers", "Bruce Banner", "Pepper Potts"), 0
-            ),
-            Quiz(
-                "What was the first Avengers movie (by US release date?",
-                listOf(
-                    "Iron Man",
-                    "Captain America: The First Avenger",
-                    "Thor",
-                    "Doctor Strange"
-                ), 0
-            )
-        )
-    )
-    private val topics: List<Topic> =  listOf(topic1, topic2, topic3)
-
-    override fun getTopics(): List<Topic> {
-        return topics
-    }
-    override fun getQuizByTopic(topicTitle: String): List<Quiz> {
-        return topics
-            .firstOrNull { it.title == topicTitle }
-            ?.questions
-            ?: emptyList()
-    }
-
-    override fun getTopicsFromJsonFile(): List<Topic> {
-        TODO("Not yet implemented")
     }
 }
