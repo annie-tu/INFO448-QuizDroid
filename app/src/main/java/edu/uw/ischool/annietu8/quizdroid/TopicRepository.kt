@@ -47,7 +47,6 @@ class JsonFileTopicRepository(private val context: Context) : TopicRepository {
     }
 
     override fun getTopicsFromJsonFile(): List<Topic> {
-        Log.i("TopicRepository", "infunction")
         val filePath = "/storage/emulated/0/Android/data/edu.uw.ischool.annietu8.quizdroid/files" + "/questions.json"
         val file = File(filePath)
         Log.i("TopicRepository", file.toString())
@@ -69,7 +68,6 @@ class JsonFileTopicRepository(private val context: Context) : TopicRepository {
         return emptyList()
     }
 
-
     private fun parseJsonArray(jsonString: String): List<Topic> {
         Log.i("TopicRepository", "parsing")
         val topics = mutableListOf<Topic>()
@@ -79,13 +77,33 @@ class JsonFileTopicRepository(private val context: Context) : TopicRepository {
             val jsonTopic = jsonArray.getJSONObject(i)
             Log.i("TopicRepository", jsonTopic.toString())
             val title = jsonTopic.getString("title")
-            val shortDescription = jsonTopic.getString("shortDescription")
-            val longDescription = jsonTopic.getString("longDescription")
+            val shortDescription = jsonTopic.getString("desc")
+            val longDescription = jsonTopic.getString("desc")
+            val questionArray = jsonTopic.getJSONArray("questions")
+            val quizObjects = mutableListOf<Quiz>()
+            for (j in 0 until questionArray.length()) {
+                val questionObject = questionArray.getJSONObject(j)
+                val questionText = questionObject.getString("text")
+                val answer = questionObject.getInt("answer")
+                val answersArray = questionObject.getJSONArray("answers")
+                Log.i("TopicRepository", "answer array $j $answersArray")
+                val quiz = Quiz(questionText, jsonArrayToList(answersArray), answer - 1)
+                quizObjects.add(quiz)
+            }
+            val topic = Topic(title, shortDescription, longDescription, quizObjects)
+            Log.i("TopicRepository", "topic $topic")
 
-            val topic = Topic(title, shortDescription, longDescription, listOf())
             topics.add(topic)
         }
         return topics
+    }
+
+    private fun jsonArrayToList(jsonArray: JSONArray): List<String> {
+        val list = mutableListOf<String>()
+        for (i in 0 until jsonArray.length()) {
+            list.add(jsonArray.getString(i))
+        }
+        return list
     }
 
 }
