@@ -17,6 +17,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        Log.i("MainActivity", filesDir.toString())
+        Log.i("MainActivity", getExternalFilesDir(null).toString())
+
         val topicTitles: List<String> = QuizApp.instance.topicRepository.getTopics().map { it.title }
         // Log.i("Main","topic titles $topicTitles")
         val quizDroidTextView: TextView = findViewById(R.id.quizDroidTextView)

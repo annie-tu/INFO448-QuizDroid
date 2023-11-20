@@ -66,8 +66,8 @@ class QuestionActivity : AppCompatActivity() {
             }
         }
         val quiz = questionList[i]
-        var answer: String = quiz.answers[quiz.correctAnswerIndex]
-        questionTextView.text = quiz.question
+        var answer: String = quiz.answers[quiz.answer]
+        questionTextView.text = quiz.text
         questionTextView.textSize = 20f
         rb1.text = quiz.answers[0]
         rb2.text = quiz.answers[1]

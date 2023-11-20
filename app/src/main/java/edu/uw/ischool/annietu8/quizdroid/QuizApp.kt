@@ -10,7 +10,7 @@ class QuizApp : Application() {
         Log.d(TAG, "QuizApp is being loaded and run.")
     }
 
-    val topicRepository: TopicRepository = InMemoryTopicRepository()
+    val topicRepository: TopicRepository = JsonFileTopicRepository(this)
 
     companion object {
         lateinit var instance: QuizApp

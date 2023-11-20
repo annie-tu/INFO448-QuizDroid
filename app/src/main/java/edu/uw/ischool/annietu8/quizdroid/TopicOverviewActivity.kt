@@ -17,7 +17,7 @@ class TopicOverviewActivity : AppCompatActivity() {
 
         val quizApp = QuizApp.instance.topicRepository.getTopics()
 
-        val topicDescriptions: List<String> = quizApp.map { it.longDescription }
+        val topicDescriptions: List<String> = quizApp.map { it.descr }
         val numQuestions = quizApp.map {it.questions.size}
 
         var topicTextView :TextView = findViewById(R.id.topicTextView)
