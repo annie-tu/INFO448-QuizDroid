@@ -1,39 +1,62 @@
 package edu.uw.ischool.annietu8.quizdroid
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+// PreferencesActivity.kt
+
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 class PreferencesActivity : AppCompatActivity() {
+
+    private lateinit var urlEditText: EditText
+    private lateinit var frequencyEditText: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_preferences)
-        setSupportActionBar(findViewById(R.id.my_toolbar))
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
 
-        val urlEditText: EditText = findViewById(R.id.urlEditText)
-        val frequencyEditText: EditText = findViewById(R.id.frequencyEditText)
+        // Initialize views
+        urlEditText = findViewById(R.id.urlEditText)
+        frequencyEditText = findViewById(R.id.frequencyEditText)
 
-        val currentUrl = preferences.getString("question_url", "/storage/emulated/0/Android/data/edu.uw.ischool.annietu8.quizdroid/files" + "/questions.json")
-
-        val currentFrequency = preferences.getInt("update_frequency", 10)
-
-        urlEditText.setText(currentUrl)
-        frequencyEditText.setText(currentFrequency.toString())
+        // Load saved preferences
+        loadPreferences()
 
         // Save button click listener
         val saveButton: Button = findViewById(R.id.saveButton)
         saveButton.setOnClickListener {
-            val editor = preferences.edit()
-            editor.putString("question_url", urlEditText.text.toString())
-            editor.putInt("update_frequency", frequencyEditText.text.toString().toInt())
-            editor.apply()
-            finish()
+            savePreferences()
         }
+    }
+
+    private fun loadPreferences() {
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences("your_preferences", Context.MODE_PRIVATE)
+
+        val savedUrl: String? = sharedPreferences.getString("url", "default_url")
+        val savedFrequency: String? = sharedPreferences.getString("frequency", "15")
+
+        urlEditText.setText(savedUrl)
+        frequencyEditText.setText(savedFrequency)
+    }
+
+    private fun savePreferences() {
+        val url: String = urlEditText.text.toString()
+        val frequency: String = frequencyEditText.text.toString()
+
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences("your_preferences", Context.MODE_PRIVATE)
+
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putString("url", url)
+        editor.putString("frequency", frequency)
+        editor.apply()
+
+        Toast.makeText(this, "Preferences saved", Toast.LENGTH_SHORT).show()
+        finish()
     }
 }

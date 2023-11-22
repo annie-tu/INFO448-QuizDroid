@@ -9,9 +9,7 @@ class QuizApp : Application() {
         instance = this
         Log.d(TAG, "QuizApp is being loaded and run.")
     }
-
     val topicRepository: TopicRepository = JsonFileTopicRepository(this)
-
     companion object {
         lateinit var instance: QuizApp
             private set

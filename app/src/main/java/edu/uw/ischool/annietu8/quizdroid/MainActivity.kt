@@ -1,8 +1,12 @@
 package edu.uw.ischool.annietu8.quizdroid
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.view.Menu
 import android.widget.AdapterView
@@ -19,8 +23,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.my_toolbar))
+        scheduleDownloadService()
 
-        Log.i("MainActivity", filesDir.toString())
         Log.i("MainActivity", getExternalFilesDir(null).toString())
 
         val topicTitles: List<String> = QuizApp.instance.topicRepository.getTopics().map { it.title }
@@ -37,6 +41,21 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+    private fun scheduleDownloadService() {
+        val alarmMgr = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, DownloadService::class.java)
+        val alarmIntent = PendingIntent.getService(
+            this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val frequency = getFrequencyFromPreferences()
+
+        alarmMgr.setRepeating(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            SystemClock.elapsedRealtime(),
+            frequency.toLong(),
+            alarmIntent
+        )
+    }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.preferences_bar, menu)
         return true
@@ -46,4 +65,10 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
         return true
     }
+    private fun getFrequencyFromPreferences(): String {
+        val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("frequency", "60") ?: "60"
+    }
+
+
 }

@@ -45,17 +45,17 @@ class JsonFileTopicRepository(private val context: Context) : TopicRepository {
     override fun getTopicsFromJsonFile(): List<Topic> {
         val filePath = "/storage/emulated/0/Android/data/edu.uw.ischool.annietu8.quizdroid/files" + "/extra_questions.json"
         val file = File(filePath)
-        Log.i("TopicRepository", file.toString())
+        val url = URL("http://tednewardsandbox.site44.com/questions.json")
+        val connection = url.openConnection() as HttpURLConnection
+        Log.i("TopicRepository", "connection $connection")
 
         try {
-            val reader = BufferedReader(InputStreamReader(FileInputStream(file)))
-            val jsonString = StringBuilder()
-
-            var line: String?
-            while (reader.readLine().also { line = it } != null) {
-                jsonString.append(line)
-            }
-            return parseJsonArray(jsonString.toString())
+            val reader = InputStreamReader(FileInputStream(file))
+            //val reader = InputStreamReader(connection.inputStream)
+            Log.i("TopicRepository", "reader $reader")
+            val content = reader.readText()
+            Log.i("TopicRepository", content)
+            return parseJsonArray(content)
         } catch (e: Exception) {
             // Handle exceptions (file not found, IO errors, etc.)
             e.printStackTrace()
@@ -65,13 +65,11 @@ class JsonFileTopicRepository(private val context: Context) : TopicRepository {
     }
 
     private fun parseJsonArray(jsonString: String): List<Topic> {
-        Log.i("TopicRepository", "parsing")
         val topics = mutableListOf<Topic>()
         val jsonArray = JSONArray(jsonString)
 
         for (i in 0 until jsonArray.length()) {
             val jsonTopic = jsonArray.getJSONObject(i)
-            Log.i("TopicRepository", jsonTopic.toString())
             val title = jsonTopic.getString("title")
             val shortDescription = jsonTopic.getString("desc")
             val longDescription = jsonTopic.getString("desc")
