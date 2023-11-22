@@ -19,7 +19,7 @@ class DownloadService : IntentService("DownloadService") {
     override fun onHandleIntent(intent: Intent?) {
         // Retrieve the URL from Preferences
         val preferences = getSharedPreferences("your_preferences", Context.MODE_PRIVATE)
-        val url = preferences.getString("question_url", "default_url").toString()
+        val url = preferences.getString("question_url", "http://tednewardsandbox.site44.com/questions.json").toString()
 
         // Check if internet connection is available
         Log.i("DownloadService", "show")
